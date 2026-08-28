@@ -1,1 +1,1 @@
-# <app-name> User Story
+# DailyHabits User Story
