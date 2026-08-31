@@ -1,4 +1,6 @@
+import 'package:dailyhabit_app/screens/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'login_screen.dart';
 
@@ -17,16 +19,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
   List<String> _countries = [];
   List<String> selectedHabits = [];
   List<String> availableHabits = [
-    'Despertar Temprano',
-    'Hacer Ejercicio',
-    'Beber Agua',
-    'Meditación',
-    'Leer un Libro',
-    'Practicar la Gratitud',
-    'Dormir 8 Horas',
-    'Alimentarse Saludablemente',
-    'Escribir en un Diario',
-    'Caminar 10,000 Pasos',
+    'Wake Up Early',
+    'Workout',
+    'Drink Water',
+    'Meditate',
+    'Read a Book',
+    'Practice Gratitude',
+    'Sleep 8 Hours',
+    'Eat Healthy',
+    'Journal',
+    'Walk 10,000 Steps',
   ];
 
   @override
@@ -37,6 +39,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Future<void> _fetchCountries() async {
     List<String> subsetCountries = [
+      'Argentina',
       'Estados Unidos',
       'Canadá',
       'Reino Unido',
@@ -57,40 +60,46 @@ class _RegisterScreenState extends State<RegisterScreen> {
     });
   }
 
+  void _showToast(String message) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+  }
+
   void _register() async {
-    final name = _nameController.text.trim();
-    final username = _usernameController.text.trim();
+    final name = _nameController.text;
+    final username = _usernameController.text;
 
-    if (name.isEmpty || username.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Por favor completá todos los campos')),
-      );
+    if (username.isEmpty || name.isEmpty) {
+      _showToast('Por favor, completa todos los campos');
       return;
     }
 
-    if (selectedHabits.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Seleccioná al menos un hábito')),
-      );
-      return;
-    }
-
-    // Si llega hasta acá, el registro fue exitoso
-    print("lógica de registro aquí");
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => HomeScreen(username: username)),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         backgroundColor: const Color(0xFF5909BA),
         title: const Text(
-          'Registro',
+          'Register',
           style: TextStyle(
             fontSize: 32,
             color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
+          textAlign: TextAlign.center,
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -119,16 +128,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildInputField(_nameController, 'Nombre', Icons.person),
+                _buildInputField(_nameController, 'Name', Icons.person),
                 const SizedBox(height: 10),
                 _buildInputField(
                   _usernameController,
-                  'Nombre de Usuario',
+                  'Username',
                   Icons.alternate_email,
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  'Edad: ${_age.round()}',
+                  'Age: ${_age.round()}',
                   style: const TextStyle(color: Colors.white, fontSize: 18),
                 ),
                 Slider(
@@ -148,7 +157,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 _buildCountryDropdown(),
                 const SizedBox(height: 10),
                 const Text(
-                  'Selecciona tus Hábitos',
+                  'Select Your Habits',
                   style: TextStyle(color: Colors.white, fontSize: 18),
                 ),
                 Wrap(
@@ -197,7 +206,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                     child: const Text(
-                      'Registrar',
+                      'Register',
                       style: TextStyle(
                         fontSize: 18,
                         color: Colors.white,

@@ -1,3 +1,4 @@
+import 'package:dailyhabit_app/screens/home_screen.dart';
 import 'package:dailyhabit_app/screens/regitser_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -16,29 +17,18 @@ class _LoginScreenState extends State<LoginScreen> {
   final String defaultPassword = 'password123';
 
   void _login() {
-    final username = _usernameController.text.trim();
-    final password = _passwordController.text.trim();
+    // La lógica de inicio de sesión va aquí
+    print("la lógica de inicio de sesión aquí");
 
-    if (username.isEmpty || password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Por favor completá usuario y contraseña'),
-        ),
+    final username = _usernameController.text;
+    final password = _passwordController.text;
+
+    if (username == defaultUsername && password == defaultPassword) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen(username: username)),
       );
-      return;
     }
-
-    if (username != defaultUsername || password != defaultPassword) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('El usuario o la contraseña son incorrectos'),
-        ),
-      );
-      return;
-    }
-
-    // Si llega hasta acá, el login fue exitoso
-    // Navigator.pushReplacement(...) a la Home
   }
 
   @override
@@ -79,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Icons.email,
                         color: const Color(0xFF8B4266),
                       ),
-                      hintText: 'Ingresa el nombre de usuario',
+                      hintText: 'Enter Username',
                       hintStyle: TextStyle(color: const Color(0xFF8B4266)),
                       border: InputBorder.none,
                       contentPadding: const EdgeInsets.symmetric(
@@ -103,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Icons.lock,
                         color: const Color(0xFF8B4266),
                       ),
-                      hintText: 'Ingresa la contraseña',
+                      hintText: 'Enter Password',
                       hintStyle: TextStyle(color: const Color(0xFF8B4266)),
                       border: InputBorder.none,
                       contentPadding: const EdgeInsets.symmetric(
@@ -121,7 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       // La lógica para recuperar la contraseña se puede agregar aquí
                     },
                     child: const Text(
-                      '¿Olvidaste tu contraseña?',
+                      'Forgot password?',
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
@@ -140,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   child: const Text(
-                    'Iniciar sesión',
+                    'Log In',
                     style: TextStyle(
                       fontSize: 18,
                       color: Colors.white,
@@ -149,7 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                const Text('o', style: TextStyle(color: Colors.white70)),
+                const Text('or', style: TextStyle(color: Colors.white70)),
                 const SizedBox(height: 10),
                 OutlinedButton(
                   onPressed: () {
@@ -171,7 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   child: const Text(
-                    'Registrarse',
+                    'Sign up',
                     style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 ),
