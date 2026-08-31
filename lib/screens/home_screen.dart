@@ -1,3 +1,4 @@
+import 'package:dailyhabit_app/screens/add_habit_screen.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -237,7 +238,12 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: selectedHabitsMap.isEmpty
           ? FloatingActionButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddHabitScreen()),
+                );
+              },
               backgroundColor: const Color(0xFF5909BA),
               tooltip: 'Agregar Hábitos',
               child: const Icon(Icons.add, color: Colors.white),
