@@ -1,15 +1,162 @@
+import 'package:dailyhabit_app/screens/regitser_screen.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  final String defaultUsername = 'testuser';
+  final String defaultPassword = 'password123';
+
+  void _login() {
+    // La lógica de inicio de sesión va aquí
+    print("login logic here");
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [const Color(0x5909BA), const Color(0x280454)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'DailyHabit',
+                  style: TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 30),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: TextField(
+                    controller: _usernameController,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(
+                        Icons.email,
+                        color: const Color(0x8B4266),
+                      ),
+                      hintText: 'Ingresa el nombre de usuario',
+                      border: InputBorder.none,
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 15,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: TextField(
+                    controller: _passwordController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(
+                        Icons.lock,
+                        color: const Color(0x8B4266),
+                      ),
+                      hintText: 'Ingresa la contraseña',
+                      border: InputBorder.none,
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 15,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () {
+                      // La lógica para recuperar la contraseña se puede agregar aquí
+                    },
+                    child: const Text(
+                      '¿Olvidaste tu contraseña?',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: _login,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0x040404),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 80,
+                      vertical: 15,
+                    ),
+                  ),
+                  child: const Text(
+                    'Iniciar sesión',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const Text('o', style: TextStyle(color: Colors.white70)),
+                const SizedBox(height: 10),
+                OutlinedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const RegisterScreen(),
+                      ),
+                    );
+                  },
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: Colors.white),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 70,
+                      vertical: 15,
+                    ),
+                  ),
+                  child: const Text(
+                    'Registrarse',
+                    style: TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
