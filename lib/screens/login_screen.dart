@@ -16,8 +16,29 @@ class _LoginScreenState extends State<LoginScreen> {
   final String defaultPassword = 'password123';
 
   void _login() {
-    // La lógica de inicio de sesión va aquí
-    print("login logic here");
+    final username = _usernameController.text.trim();
+    final password = _passwordController.text.trim();
+
+    if (username.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Por favor completá usuario y contraseña'),
+        ),
+      );
+      return;
+    }
+
+    if (username != defaultUsername || password != defaultPassword) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('El usuario o la contraseña son incorrectos'),
+        ),
+      );
+      return;
+    }
+
+    // Si llega hasta acá, el login fue exitoso
+    // Navigator.pushReplacement(...) a la Home
   }
 
   @override
@@ -26,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [const Color(0x5909BA), const Color(0x280454)],
+            colors: [const Color(0xFF5909BA), const Color(0xFF280454)],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -56,9 +77,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     decoration: InputDecoration(
                       prefixIcon: Icon(
                         Icons.email,
-                        color: const Color(0x8B4266),
+                        color: const Color(0xFF8B4266),
                       ),
                       hintText: 'Ingresa el nombre de usuario',
+                      hintStyle: TextStyle(color: const Color(0xFF8B4266)),
                       border: InputBorder.none,
                       contentPadding: const EdgeInsets.symmetric(
                         horizontal: 20,
@@ -79,9 +101,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     decoration: InputDecoration(
                       prefixIcon: Icon(
                         Icons.lock,
-                        color: const Color(0x8B4266),
+                        color: const Color(0xFF8B4266),
                       ),
                       hintText: 'Ingresa la contraseña',
+                      hintStyle: TextStyle(color: const Color(0xFF8B4266)),
                       border: InputBorder.none,
                       contentPadding: const EdgeInsets.symmetric(
                         horizontal: 20,
@@ -107,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ElevatedButton(
                   onPressed: _login,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0x040404),
+                    backgroundColor: const Color(0xFF040404),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0),
                     ),

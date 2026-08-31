@@ -58,7 +58,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   void _register() async {
-    // lógica de registro por ahora
+    final name = _nameController.text.trim();
+    final username = _usernameController.text.trim();
+
+    if (name.isEmpty || username.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Por favor completá todos los campos')),
+      );
+      return;
+    }
+
+    if (selectedHabits.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Seleccioná al menos un hábito')),
+      );
+      return;
+    }
+
+    // Si llega hasta acá, el registro fue exitoso
     print("lógica de registro aquí");
   }
 
@@ -66,7 +83,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue.shade700,
+        backgroundColor: const Color(0xFF5909BA),
         title: const Text(
           'Registro',
           style: TextStyle(
@@ -88,7 +105,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.blue.shade700, Colors.blue.shade900],
+            colors: [const Color(0xFF5909BA), const Color(0xFF280454)],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -119,8 +136,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   min: 21,
                   max: 100,
                   divisions: 79,
-                  activeColor: Colors.blue.shade600,
-                  inactiveColor: Colors.blue.shade300,
+                  activeColor: const Color(0xFF5C1438),
+                  inactiveColor: const Color(0xFF8B4266),
                   onChanged: (double value) {
                     setState(() {
                       _age = value;
@@ -148,17 +165,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         decoration: BoxDecoration(
                           color: isSelected
-                              ? Colors.blue.shade600
+                              ? const Color(0xFF8B4266)
                               : Colors.white,
                           borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: Colors.blue.shade700),
+                          border: Border.all(color: const Color(0xFFE636C0)),
                         ),
                         child: Text(
                           habit,
                           style: TextStyle(
                             color: isSelected
                                 ? Colors.white
-                                : Colors.blue.shade700,
+                                : const Color(0xFF8B4266),
                           ),
                         ),
                       ),
@@ -170,7 +187,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   child: ElevatedButton(
                     onPressed: _register,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue.shade600,
+                      backgroundColor: const Color(0xFF5D1A3B),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0),
                       ),
@@ -210,8 +227,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
       child: TextField(
         controller: controller,
         decoration: InputDecoration(
-          prefixIcon: Icon(icon, color: const Color(0x5C1438)),
+          prefixIcon: Icon(icon, color: const Color(0xFF5C1438)),
           hintText: hint,
+          hintStyle: TextStyle(color: const Color(0xFF8B4266)),
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 20,
@@ -231,7 +249,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
       child: DropdownButton<String>(
         value: _country,
-        icon: Icon(Icons.arrow_drop_down, color: const Color(0x5C1438)),
+        icon: Icon(Icons.arrow_drop_down, color: const Color(0xFF5C1438)),
         isExpanded: true,
         underline: const SizedBox(),
         items: _countries.map((String value) {
