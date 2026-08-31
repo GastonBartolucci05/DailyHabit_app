@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:dailyhabit_app/screens/add_habit_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   final String username;
@@ -17,11 +20,28 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      name = prefs.getString('name') ?? widget.username;
+      selectedHabitsMap = Map<String, String>.from(
+        jsonDecode(prefs.getString('selectedHabitsMap') ?? '{}'),
+      );
+      completedHabitsMap = Map<String, String>.from(
+        jsonDecode(prefs.getString('completedHabitsMap') ?? '{}'),
+      );
+    });
   }
 
   Future<void> _saveHabits() async {
-    //guardar hábitos en preferencias en el futuro
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('selectedHabitsMap', jsonEncode(selectedHabitsMap));
+    await prefs.setString('completedHabitsMap', jsonEncode(completedHabitsMap));
   }
+
   Color _getColorFromHex(String hexColor) {
     hexColor = hexColor.replaceAll('#', '');
     if (hexColor.length == 6) {

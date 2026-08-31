@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AddHabitScreen extends StatefulWidget {
   const AddHabitScreen({super.key});
@@ -31,21 +34,22 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
   }
 
   Future<void> _loadHabits() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      // Hábitos codificados para demostración
-      selectedHabitsMap = {
-        'Workout': 'FF5733', // Color en hex (por ejemplo, Amber)
-        'Meditate': 'FF33A1',
-        'Read a Book': '33FFA1',
-        'Drink Water': '3380FF',
-        'Practice Gratitude': 'FFC300',
-      };
-      completedHabitsMap = {'Wake Up Early': 'FF5733', 'Journal': 'DAF7A6'};
+      // Cargar hábitos de ambos mapas
+      selectedHabitsMap = Map<String, String>.from(
+        jsonDecode(prefs.getString('selectedHabitsMap') ?? '{}'),
+      );
+      completedHabitsMap = Map<String, String>.from(
+        jsonDecode(prefs.getString('completedHabitsMap') ?? '{}'),
+      );
     });
   }
 
   Future<void> _saveHabits() async {
-    // Esta función se deja intencionalmente vacía ya que no se necesita guardar
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('selectedHabitsMap', jsonEncode(selectedHabitsMap));
+    await prefs.setString('completedHabitsMap', jsonEncode(completedHabitsMap));
   }
 
   @override
@@ -124,13 +128,14 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
               onPressed: () {
                 if (_habitController.text.isNotEmpty) {
                   setState(() {
-                    // Agrega el nuevo hábito al selectedHabitsMap con el color elegido
+                    // Agregar el nuevo hábito al selectedHabitsMap con el color elegido
                     selectedHabitsMap[_habitController.text] = selectedColor
                         .value
                         .toRadixString(16);
                     _habitController.clear();
                     selectedColorName = 'Amber'; // Restablecer a predeterminado
                     selectedColor = _habitColors[selectedColorName]!;
+                    _saveHabits();
                   });
                 }
               },

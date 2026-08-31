@@ -1,6 +1,11 @@
+import 'dart:convert';
+import 'dart:math';
+
+import 'package:dailyhabit_app/list/country_list.dart';
 import 'package:dailyhabit_app/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'login_screen.dart';
 
@@ -30,34 +35,33 @@ class _RegisterScreenState extends State<RegisterScreen> {
     'Journal',
     'Walk 10,000 Steps',
   ];
+  final Map<String, Color> _habitColors = {
+    'Amber': Colors.amber,
+    'Red Accent': Colors.redAccent,
+    'Light Blue': Colors.lightBlue,
+    'Light Green': Colors.lightGreen,
+    'Purple Accent': Colors.purpleAccent,
+    'Orange': Colors.orange,
+    'Teal': Colors.teal,
+    'Deep Purple': Colors.deepPurple,
+  };
 
   @override
   void initState() {
     super.initState();
-    _fetchCountries();
+    _loadCountries();
   }
 
-  Future<void> _fetchCountries() async {
-    List<String> subsetCountries = [
-      'Argentina',
-      'Estados Unidos',
-      'Canadá',
-      'Reino Unido',
-      'Australia',
-      'India',
-      'Alemania',
-      'Francia',
-      'Japón',
-      'China',
-      'Brasil',
-      'Sudáfrica',
-    ];
-
-    setState(() {
-      _countries = subsetCountries;
-      _countries.sort();
-      _country = _countries.isNotEmpty ? _countries[0] : 'Estados Unidos';
-    });
+  Future<void> _loadCountries() async {
+    try {
+      List<String> countries = await fetchCountries();
+      setState(() {
+        _countries = countries;
+      });
+    } catch (e) {
+      // Manejar error
+      _showToast('Error al obtener los países');
+    }
   }
 
   void _showToast(String message) {
@@ -74,16 +78,41 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void _register() async {
     final name = _nameController.text;
     final username = _usernameController.text;
-
     if (username.isEmpty || name.isEmpty) {
       _showToast('Por favor, completa todos los campos');
       return;
     }
-
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // Asigna colores aleatorios a los hábitos seleccionados.
+    Map<String, String> selectedHabitsMap = {};
+    final random = Random();
+    final colorKeys = _habitColors.keys.toList();
+    for (var habit in selectedHabits) {
+      var randomColor =
+          _habitColors[colorKeys[random.nextInt(colorKeys.length)]]!;
+      selectedHabitsMap[habit] = randomColor.value.toRadixString(16);
+    }
+    // Guarda la información del usuario y los hábitos en las preferencias compartidas.
+    await prefs.setString('name', name);
+    await prefs.setString('username', username);
+    await prefs.setDouble('age', _age);
+    await prefs.setString('country', _country);
+    await prefs.setString('selectedHabitsMap', jsonEncode(selectedHabitsMap));
+    // await prefs.setStringList('selectedHabits', selectedHabits);
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => HomeScreen(username: username)),
     );
+  }
+
+  void _toggleHabitSelection(String habit) {
+    setState(() {
+      if (selectedHabits.contains(habit)) {
+        selectedHabits.remove(habit);
+      } else {
+        selectedHabits.add(habit);
+      }
+    });
   }
 
   @override
@@ -166,9 +195,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   children: availableHabits.map((habit) {
                     final isSelected = selectedHabits.contains(habit);
                     return GestureDetector(
-                      onTap: () => null,
+                      onTap: () => _toggleHabitSelection(habit),
                       child: Container(
-                        padding: const EdgeInsets.symmetric(
+                        padding: EdgeInsets.symmetric(
                           horizontal: 20,
                           vertical: 10,
                         ),
@@ -177,14 +206,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ? const Color(0xFF8B4266)
                               : Colors.white,
                           borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: const Color(0xFFE636C0)),
+                          border: Border.all(color: const Color(0xFF521332)),
                         ),
                         child: Text(
                           habit,
                           style: TextStyle(
                             color: isSelected
                                 ? Colors.white
-                                : const Color(0xFF8B4266),
+                                : const Color(0xFF7E3359),
                           ),
                         ),
                       ),

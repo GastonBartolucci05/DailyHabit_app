@@ -1,6 +1,8 @@
 import 'package:dailyhabit_app/screens/home_screen.dart';
 import 'package:dailyhabit_app/screens/regitser_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -16,17 +18,33 @@ class _LoginScreenState extends State<LoginScreen> {
   final String defaultUsername = 'testuser';
   final String defaultPassword = 'password123';
 
-  void _login() {
-    // La lógica de inicio de sesión va aquí
-    print("la lógica de inicio de sesión aquí");
-
+  void _login() async {
     final username = _usernameController.text;
     final password = _passwordController.text;
 
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // Verificar contra las credenciales predeterminadas
     if (username == defaultUsername && password == defaultPassword) {
+      await prefs.setString('name', 'Usuario de Prueba');
+      await prefs.setString('username', 'testuser');
+      await prefs.setDouble('age', 25);
+      await prefs.setString('country', 'Estados Unidos');
+
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomeScreen(username: username)),
+      );
+    } else {
+      // Vaciar preferencias compartidas
+      await prefs.clear();
+      Fluttertoast.showToast(
+        msg: "El nombre de usuario o la contraseña son incorrectos",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
       );
     }
   }
