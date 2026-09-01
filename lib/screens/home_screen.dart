@@ -1,6 +1,9 @@
 import 'dart:convert';
 
 import 'package:dailyhabit_app/screens/add_habit_screen.dart';
+import 'package:dailyhabit_app/screens/login_screen.dart';
+import 'package:dailyhabit_app/screens/personal_info_screen.dart';
+import 'package:dailyhabit_app/screens/reports_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -62,6 +65,16 @@ class _HomeScreenState extends State<HomeScreen> {
     return Colors.red; // Color predeterminado en caso de error.
   }
 
+  void _signOut(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,7 +116,17 @@ class _HomeScreenState extends State<HomeScreen> {
               ListTile(
                 leading: const Icon(Icons.settings, color: Colors.black),
                 title: Text('Configure', style: TextStyle(color: Colors.black)),
-                onTap: () => Navigator.pop(context),
+                onTap: () async {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AddHabitScreen(),
+                    ),
+                  ).then((updatedHabits) {
+                    _loadUserData(); // Recargar datos después de regresar
+                  });
+                },
               ),
               ListTile(
                 leading: const Icon(Icons.person, color: Colors.black),
@@ -111,12 +134,32 @@ class _HomeScreenState extends State<HomeScreen> {
                   'Personal Info',
                   style: TextStyle(color: Colors.black),
                 ),
-                onTap: () => Navigator.pop(context),
+                onTap: () async {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PersonalInfoScreen(),
+                    ),
+                  ).then((updatedHabits) {
+                    _loadUserData(); // Recargar datos después de regresar
+                  });
+                },
               ),
               ListTile(
                 leading: const Icon(Icons.bar_chart, color: Colors.black),
                 title: Text('Report', style: TextStyle(color: Colors.black)),
-                onTap: () => Navigator.pop(context),
+                onTap: () async {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ReportsScreen(),
+                    ),
+                  ).then((updatedHabits) {
+                    _loadUserData(); // Recargar datos después de regresar
+                  });
+                },
               ),
               ListTile(
                 leading: const Icon(Icons.notifications, color: Colors.black),
@@ -129,7 +172,9 @@ class _HomeScreenState extends State<HomeScreen> {
               ListTile(
                 leading: const Icon(Icons.logout, color: Colors.black),
                 title: Text('Sign Out', style: TextStyle(color: Colors.black)),
-                onTap: () => Navigator.pop(context),
+                onTap: () {
+                  _signOut(context);
+                },
               ),
             ],
           ),
