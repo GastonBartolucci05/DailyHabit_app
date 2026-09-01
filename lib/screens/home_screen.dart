@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dailyhabit_app/screens/add_habit_screen.dart';
 import 'package:dailyhabit_app/screens/login_screen.dart';
+import 'package:dailyhabit_app/screens/notifications_screen.dart';
 import 'package:dailyhabit_app/screens/personal_info_screen.dart';
 import 'package:dailyhabit_app/screens/reports_screen.dart';
 import 'package:flutter/material.dart';
@@ -167,7 +168,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   'Notifications',
                   style: TextStyle(color: Colors.black),
                 ),
-                onTap: () => Navigator.pop(context),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => NotificationsScreen(),
+                    ),
+                  );
+                },
               ),
               ListTile(
                 leading: const Icon(Icons.logout, color: Colors.black),
