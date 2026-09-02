@@ -29,3 +29,12 @@
 - Como usuario, quiero guardar mi información personal (nombre, nombre de usuario, edad) para que aparezca reflejada en la parte superior de la app.
 - Como usuario, quiero ver un informe de mi progreso semanal de hábitos para entender qué tan bien los estoy cumpliendo.
 - Como usuario, quiero habilitar notificaciones para hábitos específicos y elegir cuándo recibirlas para que me recuerden solo lo que me interesa.
+
+- ## APIs Externas
+- Como nuevo usuario, quiero ver una lista de países obtenida de una API externa al registrarme, para poder seleccionar el mío correctamente.
+
+## Notificaciones
+- Como usuario, quiero habilitar o deshabilitar las notificaciones desde una pantalla dedicada.
+- Como usuario, quiero elegir para qué hábitos específicos quiero recibir notificaciones.
+- Como usuario, quiero elegir en qué momento del día (mañana, tarde, noche) quiero recibirlas.
+- Como usuario, quiero poder enviarme una notificación de prueba para confirmar que la configuración funciona.
