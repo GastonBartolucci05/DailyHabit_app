@@ -1,7 +1,7 @@
 import 'dart:convert';
 
+import 'package:dailyhabit_app/utils/notifications_helper_stub.dart';
 import 'package:flutter/material.dart';
-import 'dart:html' as html;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationsScreen extends StatefulWidget {
@@ -51,25 +51,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   }
 
   void _sendTestNotification() {
-    if (html.Notification.permission != "granted") {
-      html.Notification.requestPermission().then((permission) {
-        if (permission == 'granted') {
-          html.Notification(
-            "Habit Reminder",
-            body: "It's time to work on your habits!",
-          );
-          print('Notification permission granted. Notification sent.');
-        } else {
-          print('Notification permission denied.');
-        }
-      });
-    } else {
-      html.Notification(
-        "Habit Reminder",
-        body: "It's time to work on your habits!",
-      );
-      print('Notification sent directly.');
-    }
+    sendBrowserNotification(
+      'Habit Reminder',
+      "It's time to work on your habits!",
+    );
   }
 
   @override
