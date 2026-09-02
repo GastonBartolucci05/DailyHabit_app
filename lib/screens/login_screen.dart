@@ -39,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
       // Vaciar preferencias compartidas
       await prefs.clear();
       Fluttertoast.showToast(
-        msg: "El nombre de usuario o la contraseña son incorrectos",
+        msg: "The username or password is incorrect.",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         backgroundColor: Colors.red,

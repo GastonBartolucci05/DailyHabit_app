@@ -79,7 +79,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final name = _nameController.text;
     final username = _usernameController.text;
     if (username.isEmpty || name.isEmpty) {
-      _showToast('Por favor, completa todos los campos');
+      _showToast('Please complete all steps');
       return;
     }
     SharedPreferences prefs = await SharedPreferences.getInstance();
